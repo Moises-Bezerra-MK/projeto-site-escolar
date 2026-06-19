@@ -1,0 +1,1361 @@
+/* ===================================================================
+   FONTE EXTERNA - Google Fonts (Poppins)
+   Importa a família Poppins nas variações 300 a 800
+   =================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* ===================================================================
+   VARIÁVEIS GLOBAIS (CSS Custom Properties)
+   Centraliza cores, sombras e transições para facilitar manutenção
+   =================================================================== */
+:root {
+  --Fundo: #00171F;           /* Cor de fundo escura principal */
+  --FundoClaro01: #00475F;    /* Tom mais claro para cards/seções */
+  --FundoClaro02: #003242;    /* Tom intermediário */
+  --FundoClaro00: #005e7e;    /* Tom mais claro ainda */
+  --Contraste01: #FFF;        /* Texto branco */
+  --Contraste02: #000;        /* Texto preto */
+  --Contraste03: #8a0000;     /* Vermelho para destaques especiais */
+  --destaque: #00a8cc;        /* Cor de destaque (azul ciano) */
+  --sombra: rgba(0, 0, 0, 0.3);      /* Sombra padrão */
+  --transicao: 0.3s ease;             /* Transição padrão para hovers */
+}
+
+/* RESET - Remove margens/paddings padrão e define box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Rolagem suave para âncoras internas */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ===================================================================
+   BODY - Configuração base do documento
+   Flex column para footer sempre no final da página
+   =================================================================== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--Fundo);
+  color: var(--Contraste01);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden; /* Evita scroll horizontal em animações */
+}
+
+/* ===================================================================
+   HEADER - Barra fixa no topo com efeito glass (blur)
+   Ao scroll ganha .scrolled (mais opaco + sombra)
+   =================================================================== */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0, 23, 31, 0.85); /* Semi-transparente */
+  backdrop-filter: blur(12px);        /* Efeito glass */
+  -webkit-backdrop-filter: blur(12px); /* Suporte Safari */
+  z-index: 1000;
+  padding: 0 5%;
+  transition: background var(--transicao), box-shadow var(--transicao);
+}
+
+header.scrolled {
+  background: rgba(0, 23, 31, 0.95); /* Mais opaco ao scrollar */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.4);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+/* Logo do header */
+#logoEEAFR {
+  height: 60px;
+  width: auto;
+  transition: transform var(--transicao);
+}
+
+#logoEEAFR:hover {
+  transform: scale(1.05);
+}
+
+header h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--Contraste01);
+  display: none; /* Escondido por padrão */
+}
+
+/* ===================================================================
+   NAVEGAÇÃO - Menu horizontal com links estilizados
+   =================================================================== */
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 5px;
+}
+
+nav ul li a {
+  color: var(--Contraste01);
+  text-decoration: none;
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 25px;
+  transition: all var(--transicao);
+  position: relative;
+}
+
+/* Hover e link ativo (página atual) */
+nav ul li a:hover,
+nav ul li a.ativo {
+  background: var(--FundoClaro01);
+  color: var(--Contraste01);
+}
+
+/* Foco visível para acessibilidade via teclado */
+nav ul li a:focus-visible {
+  outline: 2px solid var(--destaque);
+  outline-offset: 2px;
+}
+
+/* ===================================================================
+   MAIN - Área de conteúdo principal
+   margin-top compensa o header fixo de 80px
+   =================================================================== */
+main {
+  flex: 1;
+  margin-top: 80px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+/* Padding padrão para seções */
+section {
+  padding: 80px 5%;
+}
+
+/* Títulos de seção */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+  color: var(--Contraste01);
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 50px;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===================================================================
+   SCROLL REVEAL ANIMATIONS
+   Classes para animar elementos ao entrar na viewport
+   Usadas com IntersectionObserver no script.js
+   =================================================================== */
+
+/* Aparece de baixo para cima */
+.reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Aparece da esquerda */
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-80px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-left.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Aparece da direita */
+.reveal-right {
+  opacity: 0;
+  transform: translateX(80px);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-right.active {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Aparece com escala (zoom in) */
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-scale.active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Classes de atraso para animações em cascata (stagger) */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+.delay-5 { transition-delay: 0.5s; }
+.delay-6 { transition-delay: 0.6s; }
+
+/* ===================================================================
+   HERO - Seção de destaque da Home (layout split 50/50)
+   position: relative necessário para o scroll indicator absoluto
+   =================================================================== */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;  /* Imagem | Texto */
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  margin-top: -80px; /* Compensa o padding-top do main */
+  overflow: hidden;
+  background: var(--Fundo);
+}
+
+/* Lado da imagem (placeholder da fachada) */
+.hero-image {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Gradiente que faz a transição suave entre imagem e texto */
+.hero-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 120px;
+  background: linear-gradient(to right, transparent, var(--Fundo));
+  pointer-events: none;
+}
+
+/* Lado do texto */
+.hero-text {
+  padding: 60px 60px 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Logo dentro do hero com animação de entrada */
+.hero-text .logo-hero {
+  height: 90px;
+  width: auto;
+  margin-bottom: 30px;
+  align-self: flex-start;
+  opacity: 0;
+  animation: heroFadeIn 0.8s ease forwards 0.3s;
+}
+
+.hero-text h1 {
+  font-size: 2.6rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease forwards 0.5s;
+}
+
+.hero-text h1 span {
+  color: var(--destaque);
+}
+
+.hero-text .hero-subtitle {
+  font-size: 1.15rem;
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 10px;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease forwards 0.7s;
+}
+
+.hero-text .hero-desc {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease forwards 0.9s;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: heroSlideUp 0.8s ease forwards 1.1s;
+}
+
+/* Indicador de scroll (seta animada no centro inferior do hero) */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: heroFadeIn 1s ease forwards 1.5s;
+  z-index: 10;
+}
+
+.hero-scroll-indicator span {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-scroll-indicator .scroll-line {
+  width: 1px;
+  height: 50px;
+  background: linear-gradient(to bottom, var(--destaque), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+/* Keyframes para animações do hero */
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes heroSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ===================================================================
+   BOTÕES - Estilos base e variantes (primary, outline)
+   =================================================================== */
+.btn {
+  display: inline-block;
+  padding: 14px 36px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all var(--transicao);
+  border: none;
+}
+
+.btn-primary {
+  background: var(--destaque);
+  color: var(--Contraste01);
+}
+
+.btn-primary:hover {
+  background: #0088a8;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 168, 204, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--Contraste01);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.btn-outline:hover {
+  border-color: var(--destaque);
+  color: var(--destaque);
+  transform: translateY(-3px);
+}
+
+/* ===================================================================
+   PARALLAX DIVIDER - Separadores com efeito parallax
+   background-attachment: fixed não funciona em mobile/tablet
+   (substituído por scroll nas media queries)
+   =================================================================== */
+.parallax-divider {
+  height: 350px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Overlay escuro gradiente sobre o background */
+.parallax-divider::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(0, 23, 31, 0.85) 0%,
+    rgba(0, 50, 66, 0.7) 50%,
+    rgba(0, 23, 31, 0.85) 100%
+  );
+}
+
+.parallax-divider .parallax-text {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 700px;
+  padding: 0 20px;
+}
+
+.parallax-divider .parallax-text h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.parallax-divider .parallax-text p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ===================================================================
+   SOBRE / APRESENTAÇÃO - Seção "Quem Somos"
+   Grid 2 colunas: texto + imagem do mascote
+   =================================================================== */
+.sobre {
+  background: var(--FundoClaro02);
+}
+
+.sobre-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sobre-texto h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.sobre-texto p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 15px;
+}
+
+.sobre-imagem {
+  text-align: center;
+}
+
+/* Placeholder do mascote com bordas arredondadas e sombra */
+.sobre-imagem img,
+.mascote-placeholder {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px var(--sombra);
+}
+
+.mascote-placeholder {
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===================================================================
+   DIRETORIA - Cards grandes lado a lado
+   Cada card ocupa 50% da largura com overlay de texto na parte inferior
+   =================================================================== */
+.diretoria {
+  background: var(--Fundo);
+  padding: 100px 5%;
+}
+
+.diretoria-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card-diretoria-big {
+  position: relative; /* Necessário para o placeholder absoluto */
+  border-radius: 24px;
+  overflow: hidden;
+  min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              box-shadow 0.5s ease;
+}
+
+.card-diretoria-big:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Placeholder de foto que preenche o card inteiro (position absolute) */
+.card-diretoria-big .foto-texto-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--FundoClaro01);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 2.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-align: center;
+  padding-bottom: 60px;
+  transition: transform 0.6s ease;
+}
+
+.card-diretoria-big:hover .foto-texto-placeholder {
+  transform: scale(1.05); /* Efeito zoom no hover */
+}
+
+/* Overlay com gradiente na parte inferior do card */
+.card-diretoria-big .card-overlay {
+  position: relative;
+  z-index: 2;
+  padding: 50px 40px 40px;
+  background: linear-gradient(transparent, rgba(0, 23, 31, 0.98));
+}
+
+.card-diretoria-big .card-overlay .cargo-tag {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--Contraste01);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 8px 20px;
+  background: var(--destaque);
+  border-radius: 25px;
+  margin-bottom: 20px;
+}
+
+.card-diretoria-big .card-overlay h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.card-diretoria-big .card-overlay .frase {
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
+}
+
+/* Aspas decorativas antes e depois da frase */
+.card-diretoria-big .card-overlay .frase::before {
+  content: '\201C';
+  font-size: 1.8rem;
+  color: var(--destaque);
+  margin-right: 6px;
+}
+
+.card-diretoria-big .card-overlay .frase::after {
+  content: '\201D';
+  font-size: 1.8rem;
+  color: var(--destaque);
+  margin-left: 6px;
+}
+
+/* ===================================================================
+   CURSOS - Grid de 3 cards na Home
+   =================================================================== */
+.cursos {
+  background: var(--FundoClaro02);
+}
+
+.cursos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card-curso {
+  background: var(--Fundo);
+  border-radius: 16px;
+  padding: 35px 25px;
+  text-align: center;
+  transition: all var(--transicao);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-curso:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px var(--sombra);
+  border-color: var(--destaque);
+}
+
+/* Ícone circular com gradiente */
+.card-curso .icone {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(135deg, var(--FundoClaro01), var(--destaque));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 1.8rem;
+}
+
+.card-curso h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.card-curso p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Tag de categoria do curso (ex: "Gestão e negócios") */
+.card-curso .categoria {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--destaque);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 15px;
+  padding: 4px 12px;
+  border: 1px solid var(--destaque);
+  border-radius: 20px;
+}
+
+/* ===================================================================
+   GALERIA - Seção na Home e página completa
+   =================================================================== */
+.galeria {
+  background: var(--FundoClaro02);
+}
+
+.galeria-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto 40px;
+}
+
+.galeria-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  background: var(--FundoClaro00);
+  cursor: pointer;
+  transition: all var(--transicao);
+}
+
+.galeria-item:hover {
+  transform: scale(1.03);
+  box-shadow: 0 10px 30px var(--sombra);
+}
+
+/* Placeholder de texto para quando não há imagem */
+.galeria-item .placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, var(--FundoClaro02), var(--FundoClaro00));
+}
+
+/* Overlay que aparece no hover (usado quando há imagem) */
+.galeria-item .overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: var(--Contraste01);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity var(--transicao);
+}
+
+.galeria-item:hover .overlay {
+  opacity: 1;
+}
+
+.galeria-btn {
+  text-align: center;
+}
+
+/* ===================================================================
+   CONTATO - Cards de contato rápido na Home
+   =================================================================== */
+.contato-rapido {
+  background: var(--Fundo);
+}
+
+.contato-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.card-contato {
+  background: linear-gradient(145deg, var(--FundoClaro02), var(--FundoClaro01));
+  border-radius: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all var(--transicao);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-contato:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px var(--sombra);
+}
+
+.card-contato .icone {
+  font-size: 2rem;
+  margin-bottom: 15px;
+}
+
+.card-contato h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.card-contato p,
+.card-contato a {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+
+.card-contato a:hover {
+  color: var(--destaque);
+}
+
+/* ===================================================================
+   FOOTER - Rodapé com 3 colunas
+   2fr para descrição, 1fr para links, 1fr para contato
+   =================================================================== */
+footer {
+  background: var(--FundoClaro02);
+  padding: 60px 5% 30px;
+  margin-top: auto;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.footer-col h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--destaque);
+}
+
+.footer-col p,
+.footer-col a {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  display: block;
+  margin-bottom: 10px;
+  transition: color var(--transicao);
+}
+
+.footer-col a:hover {
+  color: var(--destaque);
+}
+
+.footer-col .logo-footer {
+  height: 70px;
+  margin-bottom: 15px;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===================================================================
+   MASCOTE - Imagem fixa no canto inferior direito
+   pointer-events: none para não interferir em cliques
+   =================================================================== */
+#mascote {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 120px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+/* ===================================================================
+   PÁGINAS INTERNAS - Cabeçalho padrão para todas as páginas secundárias
+   =================================================================== */
+.page-header {
+  background: linear-gradient(135deg, var(--FundoClaro02), var(--Fundo));
+  padding: 140px 5% 60px;
+  text-align: center;
+}
+
+.page-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.page-header p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.page-content {
+  padding: 60px 5%;
+}
+
+/* ===================================================================
+   PÁGINA CONTATO - Grid 2 colunas (info + formulário)
+   =================================================================== */
+.contato-page-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.contato-info h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+.contato-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.contato-item .icone {
+  font-size: 1.5rem;
+  min-width: 40px;
+}
+
+.contato-item h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.contato-item p,
+.contato-item a {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+}
+
+.contato-item a:hover {
+  color: var(--destaque);
+}
+
+/* Mapa do Google Maps */
+.map-container {
+  margin-top: 30px;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 300px;
+}
+
+/* Formulário de contato */
+.contato-form {
+  background: var(--FundoClaro02);
+  padding: 35px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.contato-form h2 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  background: var(--Fundo);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: var(--Contraste01);
+  transition: border-color var(--transicao);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--destaque);
+}
+
+.form-group textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+/* ===================================================================
+   PÁGINA CURSOS - Grid 3 colunas com cards detalhados
+   =================================================================== */
+.cursos-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.curso-card-full {
+  background: linear-gradient(145deg, var(--FundoClaro02), rgba(0, 71, 95, 0.2));
+  border-radius: 16px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: all var(--transicao);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.curso-card-full:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px var(--sombra);
+  border-color: var(--destaque);
+}
+
+.curso-card-full .icone {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.curso-card-full h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.curso-card-full p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+}
+
+.curso-card-full .tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--destaque);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 14px;
+  border: 1px solid var(--destaque);
+  border-radius: 20px;
+}
+
+/* ===================================================================
+   PÁGINA EVENTOS - Grid 3 colunas com data em destaque
+   =================================================================== */
+.eventos-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.evento-card-full {
+  background: linear-gradient(145deg, var(--FundoClaro02), rgba(0, 71, 95, 0.2));
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all var(--transicao);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.evento-card-full:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px var(--sombra);
+}
+
+/* Bloco de data no topo do card (destaque azul) */
+.evento-card-full .data-destaque {
+  background: var(--destaque);
+  padding: 20px;
+  text-align: center;
+}
+
+.evento-card-full .data-destaque .dia {
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.evento-card-full .data-destaque .mes {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.evento-card-full .info {
+  padding: 25px;
+}
+
+.evento-card-full .info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.evento-card-full .info p {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 10px;
+}
+
+.evento-card-full .info .local {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ===================================================================
+   PÁGINA CORPO DOCENTE - Grid 4 colunas com cards de professores
+   =================================================================== */
+.docente-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.card-docente {
+  background: linear-gradient(145deg, var(--FundoClaro02), rgba(0, 71, 95, 0.2));
+  border-radius: 16px;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all var(--transicao);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.card-docente:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px var(--sombra);
+}
+
+.foto-texto-placeholder-small {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin: 0 auto 15px;
+  background: var(--FundoClaro00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 3px solid var(--FundoClaro01);
+}
+
+.card-docente h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.card-docente p {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Frase do professor (itálico, menor) */
+.card-docente .professor-frase {
+  font-size: 0.75rem;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* ===================================================================
+   PÁGINA GALERIA - Grid da galeria completa (9 itens)
+   =================================================================== */
+.galeria-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.galeria-page-grid .galeria-item {
+  aspect-ratio: 4/3;
+}
+
+/* ===================================================================
+   BOTÃO VOLTAR AO TOPO
+   Criado dinamicamente pelo script.js
+   Posição fixa no canto inferior direito (acima do mascote)
+   =================================================================== */
+#backToTopBtn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: var(--destaque);
+  color: var(--Contraste01);
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all var(--transicao);
+  z-index: 1000;
+}
+
+#backToTopBtn.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#backToTopBtn:hover {
+  background-color: #0088a8;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0,168,204,0.4);
+}
+
+/* ===================================================================
+   PÁGINA 404 - Mensagem de erro centralizada
+   =================================================================== */
+.error-404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 60px 5%;
+}
+
+.error-404 h1 {
+  font-size: 6rem;
+  font-weight: 800;
+  color: var(--destaque);
+  margin-bottom: 10px;
+}
+
+.error-404 h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.error-404 p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 40px;
+  max-width: 500px;
+}
+
+/* ===================================================================
+   RESPONSIVIDADE - Adaptação para tablets e celulares
+   =================================================================== */
+
+/* TABLETS (até 1024px) */
+@media (max-width: 1024px) {
+  .parallax-divider { background-attachment: scroll; }
+  .hero { grid-template-columns: 1fr; margin-top: -80px; }
+  .hero-image { height: 50vh; }
+  .hero-image::after {
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--Fundo));
+  }
+  .hero-text {
+    padding: 40px 5%;
+    text-align: center;
+    align-items: center;
+  }
+  .hero-text .logo-hero { align-self: center; }
+  .hero-buttons { justify-content: center; }
+  .hero-scroll-indicator { display: none; }
+
+  .diretoria-showcase { grid-template-columns: 1fr; max-width: 600px; }
+  .card-diretoria-big { min-height: 500px; }
+
+  .sobre-grid { grid-template-columns: 1fr; gap: 40px; }
+  .cursos-grid { grid-template-columns: repeat(2, 1fr); }
+  .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+  .contato-cards { grid-template-columns: repeat(2, 1fr); }
+  .docente-grid { grid-template-columns: repeat(3, 1fr); }
+  .cursos-page-grid { grid-template-columns: repeat(2, 1fr); }
+  .eventos-page-grid { grid-template-columns: repeat(2, 1fr); }
+  .galeria-page-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-content { grid-template-columns: 1fr 1fr; }
+  .hero-text h1 { font-size: 2.2rem; }
+}
+
+/* CELULARES (até 768px) */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  #logoEEAFR { height: 50px; }
+
+  nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3px;
+  }
+
+  nav ul li a {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .hero-text { padding: 30px 5%; }
+  .hero-text h1 { font-size: 1.8rem; }
+  .hero-text .hero-subtitle { font-size: 1rem; }
+  .hero-text .logo-hero { height: 70px; }
+
+  .section-title { font-size: 1.5rem; }
+
+  .parallax-divider { height: 250px; background-attachment: scroll; }
+  .parallax-divider .parallax-text h2 { font-size: 1.5rem; }
+
+  .diretoria-showcase { grid-template-columns: 1fr; }
+  .card-diretoria-big { min-height: 400px; }
+
+  .sobre-grid { grid-template-columns: 1fr; gap: 30px; }
+  .cursos-grid { grid-template-columns: 1fr; }
+  .galeria-grid { grid-template-columns: 1fr; }
+  .contato-cards { grid-template-columns: 1fr; }
+  .contato-page-grid { grid-template-columns: 1fr; }
+  .docente-grid { grid-template-columns: repeat(2, 1fr); }
+  .cursos-page-grid { grid-template-columns: 1fr; }
+  .eventos-page-grid { grid-template-columns: 1fr; }
+  .galeria-page-grid { grid-template-columns: 1fr; }
+
+  .footer-content { grid-template-columns: 1fr; }
+
+  #mascote {
+    width: 80px;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .page-header h1 { font-size: 1.8rem; }
+  .page-header { padding: 130px 5% 40px; }
+}
