@@ -41,6 +41,17 @@ projeto-TCC/
 │   ├── contato.html            # Contato, formulario e mapa
 │   ├── secretaria-digital.html # Dados oficiais e links uteis
 │   └── 404.html                # Pagina de erro
+├── backend/                    # Backend API REST (Node.js + PostgreSQL)
+│   ├── package.json
+│   ├── .env / .env.example
+│   ├── .gitignore
+│   ├── README.md               # Instrucoes detalhadas do backend
+│   ├── server.js               # Entry point
+│   ├── config/database.js      # Conexao PostgreSQL
+│   ├── middleware/errorHandler.js
+│   ├── models/database.sql     # Schema do banco
+│   ├── routes/                 # Rotas da API
+│   └── controllers/            # Logica dos endpoints
 └── README.md
 ```
 
@@ -146,32 +157,97 @@ projeto-TCC/
 
 ---
 
+## Backend (API REST)
+
+O projeto possui a estrutura do backend com Node.js, Express e PostgreSQL.
+O **controller de contato ja esta completo**. Os demais precisam ser implementados.
+
+### Status do Backend
+
+| Componente | Status | O que falta |
+|------------|--------|-------------|
+| Estrutura de pastas | COMPLETO | Nada |
+| Conexao PostgreSQL | COMPLETO | Adicionar log, transacao, SSL |
+| Controller de contato | COMPLETO | Nada (use como modelo) |
+| Controllers (5 arquivos) | INCOMPLETO | Descomentar codigo comentado |
+| Rotas (6 arquivos) | INCOMPLETO | Adicionar PUT, DELETE |
+| database.sql | INCOMPLETO | Completar INSERTs |
+| server.js | INCOMPLETO | Descomentar middleware 404 |
+| errorHandler.js | INCOMPLETO | Tratar erros PostgreSQL |
+| script.js (frontend) | INCOMPLETO | Implementar carregamento de dados |
+
+### Para rodar o backend:
+
+1. **Baixe e instale:**
+   - [Node.js](https://nodejs.org) (v18+)
+   - [PostgreSQL](https://www.postgresql.org/download/windows/) (v14+)
+
+2. **Instale as dependencias:**
+   ```bash
+   cd projeto-TCC/backend
+   npm install
+   ```
+
+3. **Configure o banco:**
+   - Copie `.env.example` para `.env`
+   - Altere a senha do PostgreSQL em `DB_PASSWORD`
+   - Execute o schema: `psql -U postgres -f models/database.sql`
+
+4. **Inicie o servidor:**
+   ```bash
+   npm run dev    # Desenvolvimento
+   npm start      # Producao
+   ```
+
+Leia o `backend/README.md` para ver o que falta completar.
+
+---
+
 ## Tecnologias
 
 - **HTML5** - Semantico com meta tags Open Graph
 - **CSS3** - Variaveis CSS, Grid, Flexbox, media queries
-- **JavaScript vanilla** - IntersectionObserver API, sem bibliotecas externas
+- **JavaScript vanilla** - IntersectionObserver API, fetch API para backend
 - **Google Fonts** - Inter e Poppins
+- **Node.js** - Runtime JavaScript para o backend
+- **Express** - Framework web para a API REST
+- **PostgreSQL** - Banco de dados relacional
+- **pg** - Driver PostgreSQL para Node.js
 
 ---
 
 ## Como Usar
 
+### Frontend (sem backend)
 1. Abra o arquivo `projeto-TCC/index.html` no navegador
 2. Navegue pelas paginas pelo menu superior
 3. No celular, use o botao hamburger (3 linhas) para abrir o menu
 
+### Com Backend (API + PostgreSQL)
+1. Instale [Node.js](https://nodejs.org) e [PostgreSQL](https://www.postgresql.org/download/windows/)
+2. Entre na pasta backend: `cd projeto-TCC/backend`
+3. Instale dependencias: `npm install`
+4. Configure o `.env` com a senha do PostgreSQL
+5. Crie o banco: `psql -U postgres -f models/database.sql`
+6. **Complete os controllers** (descomente o codigo comentado)
+7. **Complete os INSERTs** no database.sql (professores e escola_dados)
+8. Inicie o servidor: `npm run dev`
+9. Acesse o site em `http://localhost:3000`
+
+Leia o `backend/README.md` para ver todas as tarefas pendentes.
+
 ---
 
-## Migracao do WordPress para Codigo Estatico
+## Migracao do WordPress para Codigo Estatico + Backend
 
-Originalmente o site foi pensado em WordPress. Optou-se por reescrever em HTML/CSS/JS puros por:
+Originalmente o site foi pensado em WordPress. Optou-se por reescrever em HTML/CSS/JS puros com backend proprio por:
 
 - **Performance** - Carregamento em milissegundos, sem consultas a banco
 - **Seguranca** - Sem backend, sem plugins, sem risco de ataques
 - **Custo zero** - Hospedagem gratuita (GitHub Pages, Netlify, Vercel)
 - **Manutencao simples** - Sem atualizacoes de core, temas ou plugins
 - **Proposito educacional** - Demonstracao de dominio dos fundamentos web
+- **Escalabilidade** - Backend com PostgreSQL para gerenciar conteudo (em implementacao)
 
 ---
 
@@ -181,4 +257,7 @@ Originalmente o site foi pensado em WordPress. Optou-se por reescrever em HTML/C
 - O endereco no mapa e: R. Evandro Danton Ferreira Gandra, 148 - Vila Mangalot
 - Os dados de IDEB/IDESP sao do Portal da Transparencia da Educacao de SP
 - O site funciona sem necessidade de servidor (arquivos estaticos)
+- O formulario de contato esta configurado para enviar para o backend (controller completo)
+- As APIs do backend estao estruturadas mas precisam ser implementadas (ver backend/README.md)
+- O `script.js` tem funcoes comentadas para carregar dados do backend nas paginas
 - Compativel com todos os navegadores modernos

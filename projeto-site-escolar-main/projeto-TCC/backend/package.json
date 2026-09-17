@@ -1,0 +1,25 @@
+{
+  "name": "eeafr-backend",
+  "version": "1.0.0",
+  "description": "Backend da EEAFR - API REST com Express e PostgreSQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "db:init": "psql -U postgres -f models/database.sql",
+    "db:reset": "psql -U postgres -c 'DROP DATABASE IF EXISTS eeafr_database;' && psql -U postgres -f models/database.sql",
+    "db:seed": "psql -U postgres -d eeafr_database -f models/database.sql"
+  },
+  "keywords": ["eeafr", "escola", "api", "postgresql", "express"],
+  "author": "EEAFR - Projeto TCC",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
