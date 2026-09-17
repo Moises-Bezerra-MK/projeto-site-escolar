@@ -959,6 +959,26 @@ section {
 }
 
 /* ===================================================================
+   CONTATO - Botão de ancoragem para a próxima página
+   =================================================================== */
+.btn-page{
+  text-align: center;
+  align-items: center;
+  font-size: larger;
+  text-decoration: none;
+  color: #ffffff;
+  background-color: rgba(212, 168, 67);
+  margin: 32px 300px;
+  padding: 1rem;
+  border-radius: 30px;
+}
+
+.btn-page:hover{
+  transition-duration: 0.5s;
+  background-color: #be8836;
+}
+
+/* ===================================================================
    FOOTER - Rodapé com 3 colunas
    2fr para descrição, 1fr para links, 1fr para contato
    =================================================================== */
