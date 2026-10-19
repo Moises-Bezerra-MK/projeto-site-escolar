@@ -1,5 +1,0 @@
-# CI only: local HTTPS certificate; never use this override on the public site.
-services:
-  proxy:
-    volumes:
-      - ./deploy/Caddyfile.smoke:/etc/caddy/Caddyfile:ro
